@@ -87,7 +87,8 @@ def like(produit_id):
     user_id = session.get('user_id')
 
     if not user_id:
-        return "Connectez-vous pour liker ❌"
+        flash("Connectez-vous pour liker ❌")
+        return redirect('/')
 
     exist = Likes.query.filter_by(user_id=user_id, produit_id=produit_id).first()
 
@@ -95,17 +96,12 @@ def like(produit_id):
         new_like = Likes(user_id=user_id, produit_id=produit_id)
         db.session.add(new_like)
 
-        # ✅ db.session.get() remplace le .get() déprécié
         produit = db.session.get(Produit, produit_id)
         if produit:
             produit.reactions = (produit.reactions or 0) + 1
         db.session.commit()
 
-    produits = Produit.query.all()
-    max_likes = db.session.query(db.func.max(Produit.reactions)).scalar()
-    best_produits = Produit.query.filter(Produit.reactions == max_likes).all()
-
-    return render_template('index.html', produits=produits, best_produits=best_produits, max_likes=max_likes)
+    return redirect('/index')  # ✅ redirect au lieu de render_template
 
 
 @app.route("/apropos/<int:produit_id>")
