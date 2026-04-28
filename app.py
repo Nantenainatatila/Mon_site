@@ -235,3 +235,11 @@ def debug():
     for l in likes:
         result += f"Like: user_id={l.user_id} produit_id={l.produit_id}<br>"
     return result
+@app.route("/clean_db")
+def clean_db():
+    # Supprimer les produits sans likes (ID 5-8)
+    produits_vides = Produit.query.filter_by(reactions=0).all()
+    for p in produits_vides:
+        db.session.delete(p)
+    db.session.commit()
+    return "Base nettoyée ✅"
