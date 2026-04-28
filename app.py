@@ -32,17 +32,17 @@ db = SQLAlchemy(app)
 
 
 
-"""database_url = os.getenv("DATABASE_URL")
+#"""database_url = os.getenv("DATABASE_URL")
 
-if not database_url:
-    print("⚠️ Mode local activé")
-    database_url = "sqlite:///db_teste"
+#if not database_url:
+#    print("⚠️ Mode local activé")
+#    database_url = "sqlite:///db_teste"
 
-app.config['SQLALCHEMY_DATABASE_URI'] = database_url
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+#app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+#app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
-"""
+#db = SQLAlchemy(app)
+#"""
 
 # TABLE USER
 class User(db.Model):
