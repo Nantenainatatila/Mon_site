@@ -225,21 +225,3 @@ def logout():
     session.clear()
     return redirect("/")
 
-@app.route("/debug")
-def debug():
-    produits = Produit.query.all()
-    result = ""
-    for p in produits:
-        result += f"ID:{p.id} | {p.nom} | reactions:{p.reactions}<br>"
-    likes = Likes.query.all()
-    for l in likes:
-        result += f"Like: user_id={l.user_id} produit_id={l.produit_id}<br>"
-    return result
-@app.route("/clean_db")
-def clean_db():
-    # Supprimer les produits sans likes (ID 5-8)
-    produits_vides = Produit.query.filter_by(reactions=0).all()
-    for p in produits_vides:
-        db.session.delete(p)
-    db.session.commit()
-    return "Base nettoyée ✅"
