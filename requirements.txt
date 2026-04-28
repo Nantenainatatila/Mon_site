@@ -1,4 +1,10 @@
+HEAD
 flask
 flask_sqlalchemy
 psycopg2-binary
+
+flask
+flask_sqlalchemy
+psycopg2-binary
+31d910349d178b572aea856120bbdc67d6170210
 gunicorn
