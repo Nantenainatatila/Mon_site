@@ -137,7 +137,7 @@ def home():
 
 @app.route("/index")
 def index():
-    produits = Produit.query.all()
+    produits = Produit.query.order_by(Produit.id).all() 
     max_likes = db.session.query(db.func.max(Produit.reactions)).scalar()
     best_produits = Produit.query.filter(Produit.reactions == max_likes).all()
     return render_template("index.html", produits=produits, best_produits=best_produits, max_likes=max_likes)
