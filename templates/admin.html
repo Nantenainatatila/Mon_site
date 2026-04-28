@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+</head>
+<style>
+    body{
+        display: flex;
+    }
+    table,tbody,thead,tr,th,td{
+        border-collapse: collapse;
+        border: solid 2px black;
+        
+    }
+    table{
+        width: 100%;
+    }
+</style>
+<body>
+    <div>
+    
+    <h2>Liste des commandes</h2>
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+    
+            <!-- CLIENT -->
+            <th>Nom client</th>
+            <th>Adresse</th>
+            <th>Téléphone</th>
+    
+            <!-- PRODUIT -->
+            <th>Produit</th>
+            <th>Prix unitaire</th>
+    
+            <!-- COMMANDE -->
+            <th>Quantité</th>
+            <th>Total</th>
+            <th>Date</th>
+        </tr>
+    
+        {% for c in commandes %}
+        <tr>
+            <td>{{ c.id }}</td>
+    
+            <!-- CLIENT -->
+            <td>{{ c.user.nom }}</td>
+            <td>{{ c.user.adresse }}</td>
+            <td>{{ c.user.telephone }}</td>
+    
+            <!-- PRODUIT -->
+            <td>{{ c.produit.nom }}</td>
+            <td>{{ c.produit.prix }}</td>
+    
+            <!-- COMMANDE -->
+            <td>{{ c.nombre_produit }}</td>
+            <td>{{ c.prix_total_produit }}</td>
+            <td>{{ c.date_creation }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="/logout"><button>Doconnexion</button></a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commande</title>
+</head>
+<style>
+    input{
+        width: 200px;
+    }
+    body{
+        display: flex;
+    }
+    button{
+        border-radius: 5px;
+    }
+</style>
+<body>
+    <div>
+        <h2>Produits</h2>
+
+            <div>
+                <p>{{ produit.nom }} - {{ produit.prix }} Ar</p>
+
+                <form action="" method="POST">
+                    <input type="number" name="nombre_produit" min="1" placeholder="Entrer le nombre de produit" required>
+                    <a href="/commande"><button type="submit">Commander</button></a>
+                </form>
+            </div>
+            <hr>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul>
+            {% for msg in messages %}
+                <li style="color:green;">{{ msg }}</li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+    
+    <br>
+    <a href="/index"><button>Retour</button></a>
+    </div>
+  
+</body>
+</html>

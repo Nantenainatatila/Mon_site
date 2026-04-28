@@ -1,11 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvebue dans la page d'accueil</title>
+    <title>Produit</title>
 </head>
-<body>
-    <h1>Bonjour</h1>
+<style>
+    body{
+        background-color: beige;
+    }
+    button{
+        margin: 10px;
+        padding: 5px;
+        border-radius: 5px;
+    }
+  
+    .container{
+        display: flex;
+    }
+    div{
+        margin: 5px;
+    }
+    .container1{
+        border: solid 3px blue; 
+        width: 30%; 
+        margin: 1àpx; 
+        padding: 10px; 
+        text-align: center;
+        border-radius: 20px;
+    }
+</style>
+<body> 
+    <div style="margin: auto;text-align: center;" >
+        <h1>Bienvenue </h1>
+        <a href="/logout"><button>Deconnexion</button></a>
+    </div><br>
+  
+        
+    
+    <div class="container">
+       {% for p in produits %}
+        <div class="container1">
+                <b>{{ p.nom }}</b><br>
+                {{ p.description }}<br>
+                Prix : {{ p.prix }} Ar<br>
+                Réactions : {{ p.reactions }} <br>
+                <a href="/like/{{ p.id }}"><button> Like</button></a>
+                <a href="/apropos/{{ p.id }}"><button>Voir détails</button></a>
+                <a href="/commande/{{ p.id }}"><button>Commander</button></a>
+        </div>
+        
+        {% endfor %}
+    </div>
+    </div>     
+        <center>  
+        <div>
+            <h2>Le produit le plus aimé:</h2>
+            <p>Max likes : {{ max_likes }}</p>
+            
+                {% for b in best_produits %}
+                <div >
+                    <h3>{{ b.nom }}: {{ b.reactions }} likes</h3>
+                </div>
+                {% endfor  %}
+            
+        </div>
+       </center> 
+        </div>
+     </div>      
+   
 </body>
 </html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+</head>
+<style>
+    input{
+        width: 300px;
+        height: 25px;
+        border-radius: 10px;
+        margin: 10px;
+    }
+    .container{
+        width: 500px;
+        border: solid 2px blue;
+        text-align: center;
+        margin: auto;
+        border-radius: 20px;
+        padding: 10px;
+    }
+    body{
+        text-align: center;
+        display: flex;
+        padding: 100px;
+    }
+    a {
+        margin: 10px;
+    }
+    button{
+        border-radius: 5px;
+        width: 100px;
+    }
+</style>
+<body>
+    
+    <h1>Connectez-vous pour voir le produit que vous aimez</h1>
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+        {% for msg in messages %}
+            <li style="color:green;">{{ msg }}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %} 
+        <h2>Connexion</h2>
+        <form action="" method="POST">
+            Nom et Prenom: <input type="text" name="nom" id="" required><br>
+            Mot de passe: <input type="password" name="password" id="" required><br> 
+            <button type="submit">Connexion</button>
+        </form><br> 
+        
+        Vous n'avez pas encore un compte? <a href="/creercompte">Clicquer  Ici </a>si vous n'en avez pas
+    </div>
+    <script>
+        message = "{{ message }}";
+        if(message){
+            alert(message);
+        }
+        message2 = "{{ message2 }}";
+        if(message2){
+            alert(message2);
+        }
+    </script>
+</body>
+
+</html>
