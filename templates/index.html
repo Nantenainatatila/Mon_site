@@ -1,255 +1,634 @@
-<!--
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Produit</title>
-</head>
-<style>
-    body{
-        background-color: beige;
-    }
-    button{
-        margin: 10px;
-        padding: 5px;
-        border-radius: 5px;
-    }
-  
-    .container{
-        display: flex;
-    }
-    div{
-        margin: 5px;
-    }
-    .container1{
-        border: solid 3px blue; 
-        width: 30%; 
-        margin: 1àpx; 
-        padding: 10px; 
-        text-align: center;
-        border-radius: 20px;
-    }
-</style>
-<body> 
-    <div style="margin: auto;text-align: center;" >
-        <h1>Bienvenue </h1>
-        <a href="/logout"><button>Deconnexion</button></a>
-    </div><br>
-  
-        
-    
-    <div class="container">
-       {% for p in produits %}
-        <div class="container1">
-                <b>{{ p.nom }}</b><br>
-                {{ p.description }}<br>
-                Prix : {{ p.prix }} Ar<br>
-                Réactions : {{ p.reactions }} <br>
-                <a href="/like/{{ p.id }}"><button> Like</button></a>
-                <a href="/apropos/{{ p.id }}"><button>Voir détails</button></a>
-                <a href="/commande/{{ p.id }}"><button>Commander</button></a>
-        </div>
-        
-        {% endfor %}
-    </div>    
-        <center>  
-        <div>
-            <h2>Le produit le plus aimé:</h2>
-            <p>Max likes : {{ max_likes }}</p>
-            
-                {% for b in best_produits %}
-                <div >
-                    <h3>{{ b.nom }}: {{ b.reactions }} likes</h3>
-                </div>
-                {% endfor  %}
-            
-        </div>
-       </center> 
-        </div>
-     </div>      
-   
-</body>
-</html>
--->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Produit</title>
-</head>
-<style>
-    body { background-color: beige; }
-    button { margin: 10px; padding: 5px; border-radius: 5px; cursor: pointer; }
-    .container { display: flex; flex-wrap: wrap; }
-    div { margin: 5px; }
-    .container1 {
-        border: solid 3px blue;
-        width: 30%;
-        margin: 10px;
-        padding: 10px;
-        text-align: center;
-        border-radius: 20px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHOP NANTENAINA  Madagascar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #13131a;
+            --card: #1a1a24;
+            --border: #2a2a3a;
+            --accent: #6c63ff;
+            --accent2: #ff6584;
+            --accent3: #43e97b;
+            --text: #f0f0ff;
+            --muted: #8888aa;
+            --gold: #ffd700;
+        }
 
-    /* ── Chatbot ── */
-    #chatbot {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 320px;
-        background: white;
-        border: 2px solid blue;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        font-family: Arial, sans-serif;
-        z-index: 999;
-    }
-    #chat-header {
-        background: blue;
-        color: white;
-        padding: 10px 15px;
-        border-radius: 13px 13px 0 0;
-        font-weight: bold;
-        cursor: pointer;
-        user-select: none;
-    }
-    #chat-body { padding: 10px; }
-    #chat-messages {
-        height: 200px;
-        overflow-y: auto;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 8px;
-        margin-bottom: 8px;
-        background: #f9f9f9;
-        font-size: 14px;
-    }
-    .msg-user {
-        text-align: right;
-        color: blue;
-        margin: 6px 0;
-        background: #e8f0ff;
-        padding: 5px 8px;
-        border-radius: 10px;
-    }
-    .msg-ia {
-        text-align: left;
-        color: #333;
-        margin: 6px 0;
-        background: #f0f0f0;
-        padding: 5px 8px;
-        border-radius: 10px;
-        white-space: pre-line;
-    }
-    #chat-input {
-        width: 68%;
-        padding: 6px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        font-size: 13px;
-    }
-    #chat-send {
-        width: 27%;
-        padding: 6px;
-        background: blue;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 13px;
-    }
-    #chat-send:hover { background: darkblue; }
-</style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── Background animé ── */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(108,99,255,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(255,101,132,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(67,233,123,0.04) 0%, transparent 60%);
+            animation: bgPulse 8s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes bgPulse {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(2%, 2%) rotate(1deg); }
+        }
+
+        /* ── Navbar ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 48px;
+            background: rgba(10,10,15,0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-logout {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--muted);
+            background: transparent;
+            border: 1px solid var(--border);
+            padding: 8px 20px;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-logout:hover {
+            color: var(--text);
+            border-color: var(--accent);
+            background: rgba(108,99,255,0.1);
+        }
+
+        /* ── Hero ── */
+        .hero {
+            position: relative;
+            z-index: 1;
+            padding: 140px 48px 60px;
+            text-align: center;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            border: 1px solid rgba(108,99,255,0.3);
+            padding: 6px 18px;
+            border-radius: 100px;
+            margin-bottom: 24px;
+            animation: fadeDown 0.6s ease both;
+        }
+
+        .hero h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -2px;
+            margin-bottom: 16px;
+            animation: fadeDown 0.6s 0.1s ease both;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--muted);
+            font-size: 1.1rem;
+            font-weight: 300;
+            animation: fadeDown 0.6s 0.2s ease both;
+        }
+
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Grille produits ── */
+        .products-section {
+            position: relative;
+            z-index: 1;
+            padding: 20px 48px 60px;
+        }
+
+        .section-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 28px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: cardIn 0.5s ease both;
+            cursor: default;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(108,99,255,0.4);
+            box-shadow: 0 20px 60px rgba(108,99,255,0.15);
+        }
+
+        .card:hover::before { transform: scaleX(1); }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .card-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .card-desc {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-bottom: 16px;
+            font-weight: 300;
+        }
+
+        .card-price {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--accent3);
+            margin-bottom: 12px;
+        }
+
+        .card-likes {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: var(--muted);
+            background: rgba(255,255,255,0.05);
+            padding: 4px 12px;
+            border-radius: 100px;
+            margin-bottom: 20px;
+        }
+
+        .card-likes .heart { color: var(--accent2); }
+
+        .card-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .btn {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 500;
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-like {
+            background: rgba(255,101,132,0.15);
+            color: var(--accent2);
+            border: 1px solid rgba(255,101,132,0.2);
+        }
+        .btn-like:hover {
+            background: var(--accent2);
+            color: white;
+            transform: scale(1.03);
+        }
+
+        .btn-detail {
+            background: rgba(108,99,255,0.12);
+            color: var(--accent);
+            border: 1px solid rgba(108,99,255,0.2);
+        }
+        .btn-detail:hover {
+            background: var(--accent);
+            color: white;
+            transform: scale(1.03);
+        }
+
+        .btn-order {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: white;
+            border: none;
+        }
+        .btn-order:hover {
+            opacity: 0.85;
+            transform: scale(1.03);
+        }
+
+        /* ── Best produit ── */
+        .best-section {
+            position: relative;
+            z-index: 1;
+            padding: 20px 48px 60px;
+        }
+
+        .best-card {
+            background: linear-gradient(135deg, rgba(108,99,255,0.15), rgba(255,101,132,0.1));
+            border: 1px solid rgba(108,99,255,0.3);
+            border-radius: 20px;
+            padding: 32px 40px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            max-width: 600px;
+            animation: fadeDown 0.6s 0.5s ease both;
+        }
+
+        .best-trophy {
+            font-size: 3.5rem;
+            animation: trophyBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes trophyBounce {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-8px) rotate(5deg); }
+        }
+
+        .best-info h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .best-info .best-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .best-info .best-likes {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .best-info .best-likes span {
+            color: var(--accent2);
+            font-weight: 600;
+        }
+
+        /* ── Chatbot ── */
+        #chatbot {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 340px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            font-family: 'DM Sans', sans-serif;
+            z-index: 999;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #chatbot.minimized { width: 200px; }
+
+        #chat-header {
+            background: linear-gradient(135deg, var(--accent), #9b59b6);
+            color: white;
+            padding: 14px 18px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+        }
+
+        .chat-header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chat-dot {
+            width: 8px; height: 8px;
+            background: var(--accent3);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        #chat-body { padding: 14px; }
+
+        #chat-messages {
+            height: 220px;
+            overflow-y: auto;
+            padding: 4px;
+            margin-bottom: 12px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+
+        #chat-messages::-webkit-scrollbar { width: 4px; }
+        #chat-messages::-webkit-scrollbar-track { background: transparent; }
+        #chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+        .msg-user, .msg-ia {
+            max-width: 85%;
+            padding: 9px 13px;
+            border-radius: 14px;
+            margin-bottom: 8px;
+            font-size: 0.83rem;
+            line-height: 1.5;
+            animation: msgIn 0.3s ease both;
+        }
+
+        @keyframes msgIn {
+            from { opacity: 0; transform: translateY(8px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .msg-user {
+            background: linear-gradient(135deg, var(--accent), #9b59b6);
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .msg-ia {
+            background: var(--card);
+            color: var(--text);
+            border: 1px solid var(--border);
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+            white-space: pre-line;
+        }
+
+        .chat-input-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        #chat-input {
+            flex: 1;
+            padding: 9px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.83rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        #chat-input:focus { border-color: var(--accent); }
+        #chat-input::placeholder { color: var(--muted); }
+
+        #chat-send {
+            padding: 9px 14px;
+            background: linear-gradient(135deg, var(--accent), #9b59b6);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        #chat-send:hover { opacity: 0.85; transform: scale(1.05); }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            nav { padding: 14px 20px; }
+            .hero { padding: 110px 20px 40px; }
+            .products-section, .best-section { padding: 20px; }
+            .products-grid { grid-template-columns: 1fr 1fr; }
+            #chatbot { width: calc(100vw - 40px); right: 20px; }
+        }
+
+        @media (max-width: 480px) {
+            .products-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
 <body>
-    <div style="margin: auto; text-align: center;">
-        <h1>Bienvenue</h1>
-        <a href="/logout"><button>Deconnexion</button></a>
-    </div><br>
 
-    <div class="container">
-        {% for p in produits %}
-        <div class="container1">
-            <b>{{ p.nom }}</b><br>
-            {{ p.description }}<br>
-            Prix : {{ p.prix }} Ar<br>
-            Reactions : {{ p.reactions }}<br>
-            <a href="/like/{{ p.id }}"><button>Like</button></a>
-            <a href="/apropos/{{ p.id }}"><button>Voir details</button></a>
-            <a href="/commande/{{ p.id }}"><button>Commander</button></a>
+    <!-- ── Navbar ── -->
+    <nav>
+        <div class="logo">Shop NANTENAINA</div>
+        <div class="nav-right">
+            <a href="/logout" class="btn-logout">Déconnexion</a>
         </div>
-        {% endfor %}
-    </div>
+    </nav>
 
-    <center>
-        <div>
-            <h2>Le produit le plus aime :</h2>
-            <p>Max likes : {{ max_likes }}</p>
-            {% for b in best_produits %}
-            <div>
-                <h3>{{ b.nom }} : {{ b.reactions }} likes</h3>
+    <!-- ── Hero ── -->
+    <section class="hero">
+        <div class="hero-tag">✦ Boutique en ligne Madagascar</div>
+        <h1>Découvrez nos<br><span>meilleurs produits</span></h1>
+        <p>Technologie de qualité, livrée chez vous</p>
+    </section>
+
+    <!-- ── Produits ── -->
+    <section class="products-section">
+        <p class="section-title">✦ Catalogue produits</p>
+        <div class="products-grid">
+            {% for p in produits %}
+            <div class="card">
+                <span class="card-icon">
+                    {% if 'samsung' in p.nom|lower or 'telephone' in p.nom|lower %}📱
+                    {% elif 'iphone' in p.nom|lower %}
+                    {% elif 'casque' in p.nom|lower or 'bluetooth' in p.nom|lower %}🎧
+                    {% elif 'clavier' in p.nom|lower %}
+                    {% else %}{% endif %}
+                </span>
+                <div class="card-name">{{ p.nom }}</div>
+                <div class="card-desc">{{ p.description }}</div>
+                <div class="card-price">{{ "{:,.0f}".format(p.prix) }} Ar</div>
+                <div class="card-likes">
+                    <span class="heart"></span>
+                    {{ p.reactions }} likes
+                </div>
+                <div class="card-actions">
+                    <a href="/like/{{ p.id }}" class="btn btn-like"> Liker</a>
+                    <a href="/apropos/{{ p.id }}" class="btn btn-detail">Voir détails</a>
+                    <a href="/commande/{{ p.id }}" class="btn btn-order">Commander →</a>
+                </div>
             </div>
             {% endfor %}
         </div>
-    </center>
+    </section>
 
-    <!-- ── CHATBOT ── -->
+    <!-- ── Best produit ── -->
+    <section class="best-section">
+        <p class="section-title">✦ Produit le plus aimé</p>
+        {% for b in best_produits %}
+        <div class="best-card">
+            <div class="best-trophy"></div>
+            <div class="best-info">
+                <h3>Meilleur produit</h3>
+                <div class="best-name">{{ b.nom }}</div>
+                <div class="best-likes"><span>{{ b.reactions }} likes</span> au total</div>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+
+    <!-- ── Chatbot ── -->
     <div id="chatbot">
-        <div id="chat-header" onclick="toggleChat()">💬 Assistant ▲</div>
+        <div id="chat-header" onclick="toggleChat()">
+            <div class="chat-header-left">
+                <div class="chat-dot"></div>
+                💬 Assistant TechShop
+            </div>
+            <span id="chat-arrow">▼</span>
+        </div>
         <div id="chat-body">
             <div id="chat-messages">
-                <div class="msg-ia"> Bonjour ! Comment puis-je vous aider ? Tapez "aide" pour voir ce que je peux faire.</div>
+                <div class="msg-ia"> Bonjour ! Je suis votre assistant. Tapez <b>aide</b> pour voir ce que je peux faire !</div>
             </div>
-            <input id="chat-input" type="text" placeholder="Votre question..."
-                   onkeypress="if(event.key==='Enter') envoyerMessage()"/>
-            <button id="chat-send" onclick="envoyerMessage()">Envoyer</button>
+            <div class="chat-input-row">
+                <input id="chat-input" type="text" placeholder="Posez une question..."
+                       onkeypress="if(event.key==='Enter') envoyerMessage()"/>
+                <button id="chat-send" onclick="envoyerMessage()">➤</button>
+            </div>
         </div>
     </div>
 
     <script>
+        let chatOpen = true;
+
         function toggleChat() {
             const body = document.getElementById('chat-body');
-            const header = document.getElementById('chat-header');
-            if (body.style.display === 'none') {
-                body.style.display = 'block';
-                header.innerHTML = '💬 Assistant ▲';
-            } else {
-                body.style.display = 'none';
-                header.innerHTML = '💬 Assistant ▼';
-            }
+            const arrow = document.getElementById('chat-arrow');
+            chatOpen = !chatOpen;
+            body.style.display = chatOpen ? 'block' : 'none';
+            arrow.textContent = chatOpen ? '▼' : '▲';
         }
 
         async function envoyerMessage() {
             const input = document.getElementById('chat-input');
             const messages = document.getElementById('chat-messages');
             const message = input.value.trim();
-
             if (!message) return;
 
-            // Afficher message utilisateur
-            messages.innerHTML += `<div class="msg-user">Vous : ${message}</div>`;
+            messages.innerHTML += `<div class="msg-user">${message}</div>`;
             input.value = '';
 
-            // Indicateur de chargement
-            messages.innerHTML += `<div class="msg-ia" id="loading">⏳ ...</div>`;
+            const loadingId = 'loading-' + Date.now();
+            messages.innerHTML += `<div class="msg-ia" id="${loadingId}"> ...</div>`;
             messages.scrollTop = messages.scrollHeight;
 
             try {
                 const response = await fetch('/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: message })
+                    body: JSON.stringify({ message })
                 });
-
                 const data = await response.json();
-
-                // Supprimer indicateur de chargement
-                document.getElementById('loading').remove();
-
+                document.getElementById(loadingId)?.remove();
                 messages.innerHTML += `<div class="msg-ia"> ${data.reponse}</div>`;
-                messages.scrollTop = messages.scrollHeight;
-
-            } catch (error) {
-                document.getElementById('loading').remove();
-                messages.innerHTML += `<div class="msg-ia">Erreur de connexion</div>`;
+            } catch {
+                document.getElementById(loadingId)?.remove();
+                messages.innerHTML += `<div class="msg-ia">❌ Erreur de connexion</div>`;
             }
+
+            messages.scrollTop = messages.scrollHeight;
         }
     </script>
 
