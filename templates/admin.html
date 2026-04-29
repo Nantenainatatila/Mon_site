@@ -1,68 +1,206 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin</title>
-</head>
-<style>
-    body{
-        display: flex;
-    }
-    table,tbody,thead,tr,th,td{
-        border-collapse: collapse;
-        border: solid 2px black;
-        
-    }
-    table{
-        width: 100%;
-    }
-</style>
-<body>
-    <div>
-    
-    <h2>Liste des commandes</h2>
 
-    <table border="1">
-        <tr>
-            <th>ID</th>
-    
-            <!-- CLIENT -->
-            <th>Nom client</th>
-            <th>Adresse</th>
-            <th>Téléphone</th>
-    
-            <!-- PRODUIT -->
-            <th>Produit</th>
-            <th>Prix unitaire</th>
-    
-            <!-- COMMANDE -->
-            <th>Quantité</th>
-            <th>Total</th>
-            <th>Date</th>
-        </tr>
-    
-        {% for c in commandes %}
-        <tr>
-            <td>{{ c.id }}</td>
-    
-            <!-- CLIENT -->
-            <td>{{ c.user.nom }}</td>
-            <td>{{ c.user.adresse }}</td>
-            <td>{{ c.user.telephone }}</td>
-    
-            <!-- PRODUIT -->
-            <td>{{ c.produit.nom }}</td>
-            <td>{{ c.produit.prix }}</td>
-    
-            <!-- COMMANDE -->
-            <td>{{ c.nombre_produit }}</td>
-            <td>{{ c.prix_total_produit }}</td>
-            <td>{{ c.date_creation }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <a href="/logout"><button>Doconnexion</button></a>
-    </div>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+
+<style>
+
+/* ───────── THEME ───────── */
+:root {
+    --bg: #0a0a0f;
+    --card: #1a1a24;
+    --border: #2a2a3a;
+    --accent: #6c63ff;
+    --accent2: #ff6584;
+    --accent3: #43e97b;
+    --text: #f0f0ff;
+    --muted: #8888aa;
+}
+
+/* ───────── BASE ───────── */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 40px;
+}
+
+/* ───────── BACKGROUND ANIMÉ ───────── */
+body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(108,99,255,0.15), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(255,101,132,0.10), transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(67,233,123,0.08), transparent 50%);
+    animation: moveBg 10s ease-in-out infinite alternate;
+    z-index: 0;
+}
+
+@keyframes moveBg {
+    0% { transform: translate(0,0); }
+    100% { transform: translate(20px,20px); }
+}
+
+/* ───────── CONTAINER ───────── */
+.container {
+    position: relative;
+    z-index: 1;
+}
+
+/* ───────── TITLE ───────── */
+h2 {
+    margin-bottom: 20px;
+    color: var(--accent);
+    font-size: 24px;
+}
+
+/* ───────── TABLE ───────── */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(26,26,36,0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+/* header */
+th {
+    background: var(--card);
+    color: var(--accent);
+    padding: 12px;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+/* cells */
+td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+}
+
+/* hover ligne */
+tr:hover {
+    background: rgba(108,99,255,0.1);
+    transition: 0.3s;
+}
+
+/* ───────── BADGES ───────── */
+td:nth-child(8) {
+    color: var(--accent3);
+    font-weight: bold;
+}
+
+/* ───────── BUTTON ───────── */
+button {
+    margin-top: 20px;
+    padding: 12px 20px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: white;
+    font-weight: bold;
+
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(108,99,255,0.4);
+}
+
+/* ───────── RESPONSIVE ───────── */
+@media(max-width: 900px) {
+    table {
+        font-size: 12px;
+    }
+}
+
+@media(max-width: 600px) {
+    body {
+        padding: 15px;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>📊 Liste des commandes (Admin)</h2>
+
+<table>
+
+<tr>
+    <th>ID</th>
+    <th>Client</th>
+    <th>Adresse</th>
+    <th>Téléphone</th>
+    <th>Produit</th>
+    <th>Prix</th>
+    <th>Quantité</th>
+    <th>Total</th>
+    <th>Date</th>
+</tr>
+
+{% for c in commandes %}
+
+<tr>
+    <td>{{ c.id }}</td>
+
+```
+<td>{{ c.user.nom }}</td>
+<td>{{ c.user.adresse }}</td>
+<td>{{ c.user.telephone }}</td>
+
+<td>{{ c.produit.nom }}</td>
+<td>{{ c.produit.prix }} Ar</td>
+
+<td>{{ c.nombre_produit }}</td>
+<td>{{ c.prix_total_produit }} Ar</td>
+
+<td>{{ c.date_creation }}</td>
+```
+
+</tr>
+{% endfor %}
+
+</table>
+
+<a href="/logout">
+    <button>🔴 Déconnexion</button>
+</a>
+
+</div>
+
 </body>
 </html>

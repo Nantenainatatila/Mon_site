@@ -1,47 +1,217 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Commande</title>
-</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commande</title>
+
 <style>
-    input{
-        width: 200px;
+
+/* ───────── THEME ───────── */
+:root {
+    --bg: #0a0a0f;
+    --card: #1a1a24;
+    --border: #2a2a3a;
+    --accent: #6c63ff;
+    --accent2: #ff6584;
+    --accent3: #43e97b;
+    --text: #f0f0ff;
+    --muted: #8888aa;
+}
+
+/* ───────── BASE ───────── */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* ───────── BACKGROUND ANIMÉ ───────── */
+body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(108,99,255,0.15), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(255,101,132,0.10), transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(67,233,123,0.08), transparent 50%);
+    animation: moveBg 10s ease-in-out infinite alternate;
+    z-index: 0;
+}
+
+@keyframes moveBg {
+    0% { transform: translate(0,0); }
+    100% { transform: translate(20px,20px); }
+}
+
+/* ───────── CONTAINER ───────── */
+.container {
+    position: relative;
+    z-index: 1;
+    width: 400px;
+    padding: 25px;
+    border-radius: 20px;
+
+    background: rgba(26,26,36,0.6);
+    backdrop-filter: blur(18px);
+
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+
+    animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(40px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+/* ───────── TITRE ───────── */
+h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: var(--accent);
+}
+
+/* ───────── PRODUIT CARD ───────── */
+.product {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* ───────── INPUT ───────── */
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+
+    border-radius: 10px;
+    border: 1px solid var(--border);
+
+    background: var(--bg);
+    color: var(--text);
+
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(108,99,255,0.4);
+    transform: scale(1.03);
+}
+
+/* ───────── BUTTON ───────── */
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: white;
+    font-weight: bold;
+
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(108,99,255,0.4);
+}
+
+/* ───────── LINK ───────── */
+a {
+    text-decoration: none;
+}
+
+/* ───────── MESSAGE ───────── */
+ul {
+    list-style: none;
+    text-align: center;
+    margin-top: 10px;
+}
+
+li {
+    color: var(--accent3);
+}
+
+/* ───────── BACK BUTTON ───────── */
+.back {
+    margin-top: 10px;
+    display: block;
+    text-align: center;
+    color: var(--accent3);
+}
+
+/* ───────── RESPONSIVE ───────── */
+@media(max-width: 420px){
+    .container {
+        width: 90%;
     }
-    body{
-        display: flex;
-    }
-    button{
-        border-radius: 5px;
-    }
+}
+
 </style>
+
+</head>
+
 <body>
-    <div>
-        <h2>Produits</h2>
 
-            <div>
-                <p>{{ produit.nom }} - {{ produit.prix }} Ar</p>
+<div class="container">
 
-                <form action="" method="POST">
-                    <input type="number" name="nombre_produit" min="1" placeholder="Entrer le nombre de produit" required>
-                    <a href="/commande"><button type="submit">Commander</button></a>
-                </form>
-            </div>
-            <hr>
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <ul>
-            {% for msg in messages %}
-                <li style="color:green;">{{ msg }}</li>
-            {% endfor %}
-            </ul>
-            {% endif %}
-            {% endwith %}
-    
-    <br>
-    <a href="/index"><button>Retour</button></a>
-    </div>
-  
+<h2>🛒 Commande Produit</h2>
+
+<div class="product">
+    <p><b>{{ produit.nom }}</b></p>
+    <p style="color:#43e97b;">{{ produit.prix }} Ar</p>
+</div>
+
+<form method="POST">
+
+```
+<input type="number" name="nombre_produit" min="1" placeholder="Nombre de produit" required>
+
+<button type="submit">Commander</button>
+```
+
+</form>
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+
+<ul>
+    {% for msg in messages %}
+    <li>{{ msg }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+<a href="/index" class="back">⬅ Retour</a>
+
+</div>
+
 </body>
 </html>
