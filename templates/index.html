@@ -195,7 +195,7 @@
         <div id="chat-header" onclick="toggleChat()">💬 Assistant ▲</div>
         <div id="chat-body">
             <div id="chat-messages">
-                <div class="msg-ia">👋 Bonjour ! Comment puis-je vous aider ? Tapez "aide" pour voir ce que je peux faire.</div>
+                <div class="msg-ia"> Bonjour ! Comment puis-je vous aider ? Tapez "aide" pour voir ce que je peux faire.</div>
             </div>
             <input id="chat-input" type="text" placeholder="Votre question..."
                    onkeypress="if(event.key==='Enter') envoyerMessage()"/>
@@ -243,7 +243,7 @@
                 // Supprimer indicateur de chargement
                 document.getElementById('loading').remove();
 
-                messages.innerHTML += `<div class="msg-ia">🤖 ${data.reponse}</div>`;
+                messages.innerHTML += `<div class="msg-ia"> ${data.reponse}</div>`;
                 messages.scrollTop = messages.scrollHeight;
 
             } catch (error) {
