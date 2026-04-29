@@ -531,9 +531,9 @@
             {% for p in produits %}
             <div class="card">
                 <span class="card-icon">
-                    {% if 'samsung' in p.nom|lower or 'telephone' in p.nom|lower %}📱
+                    {% if 'samsung' in p.nom|lower or 'telephone' in p.nom|lower %}
                     {% elif 'iphone' in p.nom|lower %}
-                    {% elif 'casque' in p.nom|lower or 'bluetooth' in p.nom|lower %}🎧
+                    {% elif 'casque' in p.nom|lower or 'bluetooth' in p.nom|lower %}
                     {% elif 'clavier' in p.nom|lower %}
                     {% else %}{% endif %}
                 </span>
