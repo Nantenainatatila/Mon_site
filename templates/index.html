@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html>
 <head>
@@ -66,5 +67,191 @@
         </div>
      </div>      
    
+</body>
+</html>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Produit</title>
+</head>
+<style>
+    body { background-color: beige; }
+    button { margin: 10px; padding: 5px; border-radius: 5px; cursor: pointer; }
+    .container { display: flex; flex-wrap: wrap; }
+    div { margin: 5px; }
+    .container1 {
+        border: solid 3px blue;
+        width: 30%;
+        margin: 10px;
+        padding: 10px;
+        text-align: center;
+        border-radius: 20px;
+    }
+
+    /* ── Chatbot ── */
+    #chatbot {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 320px;
+        background: white;
+        border: 2px solid blue;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        font-family: Arial, sans-serif;
+        z-index: 999;
+    }
+    #chat-header {
+        background: blue;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 13px 13px 0 0;
+        font-weight: bold;
+        cursor: pointer;
+        user-select: none;
+    }
+    #chat-body { padding: 10px; }
+    #chat-messages {
+        height: 200px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 8px;
+        margin-bottom: 8px;
+        background: #f9f9f9;
+        font-size: 14px;
+    }
+    .msg-user {
+        text-align: right;
+        color: blue;
+        margin: 6px 0;
+        background: #e8f0ff;
+        padding: 5px 8px;
+        border-radius: 10px;
+    }
+    .msg-ia {
+        text-align: left;
+        color: #333;
+        margin: 6px 0;
+        background: #f0f0f0;
+        padding: 5px 8px;
+        border-radius: 10px;
+        white-space: pre-line;
+    }
+    #chat-input {
+        width: 68%;
+        padding: 6px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 13px;
+    }
+    #chat-send {
+        width: 27%;
+        padding: 6px;
+        background: blue;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 13px;
+    }
+    #chat-send:hover { background: darkblue; }
+</style>
+<body>
+    <div style="margin: auto; text-align: center;">
+        <h1>Bienvenue</h1>
+        <a href="/logout"><button>Deconnexion</button></a>
+    </div><br>
+
+    <div class="container">
+        {% for p in produits %}
+        <div class="container1">
+            <b>{{ p.nom }}</b><br>
+            {{ p.description }}<br>
+            Prix : {{ p.prix }} Ar<br>
+            Reactions : {{ p.reactions }}<br>
+            <a href="/like/{{ p.id }}"><button>Like</button></a>
+            <a href="/apropos/{{ p.id }}"><button>Voir details</button></a>
+            <a href="/commande/{{ p.id }}"><button>Commander</button></a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <center>
+        <div>
+            <h2>Le produit le plus aime :</h2>
+            <p>Max likes : {{ max_likes }}</p>
+            {% for b in best_produits %}
+            <div>
+                <h3>{{ b.nom }} : {{ b.reactions }} likes</h3>
+            </div>
+            {% endfor %}
+        </div>
+    </center>
+
+    <!-- ── CHATBOT ── -->
+    <div id="chatbot">
+        <div id="chat-header" onclick="toggleChat()">💬 Assistant ▲</div>
+        <div id="chat-body">
+            <div id="chat-messages">
+                <div class="msg-ia">👋 Bonjour ! Comment puis-je vous aider ? Tapez "aide" pour voir ce que je peux faire.</div>
+            </div>
+            <input id="chat-input" type="text" placeholder="Votre question..."
+                   onkeypress="if(event.key==='Enter') envoyerMessage()"/>
+            <button id="chat-send" onclick="envoyerMessage()">Envoyer</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleChat() {
+            const body = document.getElementById('chat-body');
+            const header = document.getElementById('chat-header');
+            if (body.style.display === 'none') {
+                body.style.display = 'block';
+                header.innerHTML = '💬 Assistant ▲';
+            } else {
+                body.style.display = 'none';
+                header.innerHTML = '💬 Assistant ▼';
+            }
+        }
+
+        async function envoyerMessage() {
+            const input = document.getElementById('chat-input');
+            const messages = document.getElementById('chat-messages');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            // Afficher message utilisateur
+            messages.innerHTML += `<div class="msg-user">Vous : ${message}</div>`;
+            input.value = '';
+
+            // Indicateur de chargement
+            messages.innerHTML += `<div class="msg-ia" id="loading">⏳ ...</div>`;
+            messages.scrollTop = messages.scrollHeight;
+
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: message })
+                });
+
+                const data = await response.json();
+
+                // Supprimer indicateur de chargement
+                document.getElementById('loading').remove();
+
+                messages.innerHTML += `<div class="msg-ia">🤖 ${data.reponse}</div>`;
+                messages.scrollTop = messages.scrollHeight;
+
+            } catch (error) {
+                document.getElementById('loading').remove();
+                messages.innerHTML += `<div class="msg-ia">Erreur de connexion</div>`;
+            }
+        }
+    </script>
+
 </body>
 </html>
