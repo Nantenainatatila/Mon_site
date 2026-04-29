@@ -6,65 +6,305 @@
     <title>Connexion</title>
 </head>
 <style>
-    input{
-        width: 300px;
-        height: 25px;
-        border-radius: 10px;
-        margin: 10px;
-    }
-    .container{
-        width: 500px;
-        border: solid 2px blue;
-        text-align: center;
-        margin: auto;
-        border-radius: 20px;
-        padding: 10px;
-    }
-    body{
-        text-align: center;
-        display: flex;
-        padding: 100px;
-    }
-    a {
-        margin: 10px;
-    }
-    button{
-        border-radius: 5px;
-        width: 100px;
-    }
+    /* 🌈 fond animé */
+body {
+    margin: 0;
+    height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(-45deg, #4facfe, #00f2fe, #43e97b, #38f9d7);
+    background-size: 400% 400%;
+    animation: bg 12s ease infinite;
+}
+
+@keyframes bg {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+/* titre */
+h1 {
+    position: absolute;
+    top: 30px;
+    color: white;
+}
+
+/* container */
+.container {
+    width: 380px;
+    padding: 30px;
+    border-radius: 20px;
+
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(15px);
+
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+
+    text-align: center;
+
+    animation: fadeIn 1.2s ease;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(40px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+/* inputs */
+.input-group {
+    position: relative;
+    margin: 15px 0;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 40px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px #00f2fe;
+}
+
+/* bouton */
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+
+    background: #4facfe;
+    color: white;
+    font-weight: bold;
+
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #00c6ff;
+    transform: translateY(-3px);
+}
 </style>
 <body>
     
-    <h1>Connectez-vous pour voir le produit que vous aimez</h1>
-    <div class="container">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-        {% for msg in messages %}
-            <li style="color:green;">{{ msg }}</li>
-        {% endfor %}
-        </ul>
-        {% endif %}
-    {% endwith %} 
-        <h2>Connexion</h2>
-        <form action="" method="POST">
-            Nom et Prenom: <input type="text" name="nom" id="" required><br>
-            Mot de passe: <input type="password" name="password" id="" required><br> 
-            <button type="submit">Connexion</button>
-        </form><br> 
-        
-        Vous n'avez pas encore un compte? <a href="/creercompte">Clicquer  Ici </a>si vous n'en avez pas
-    </div>
-    <script>
-        message = "{{ message }}";
-        if(message){
-            alert(message);
-        }
-        message2 = "{{ message2 }}";
-        if(message2){
-            alert(message2);
-        }
-    </script>
-</body>
+    <!DOCTYPE html>
 
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHOP NANTENAINA Madagascar</title>
+
+<!-- Font Awesome -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+
+/* 🌈 fond animé */
+body {
+    margin: 0;
+    height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(-45deg, #4facfe, #00f2fe, #43e97b, #38f9d7);
+    background-size: 400% 400%;
+    animation: bg 12s ease infinite;
+}
+
+@keyframes bg {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+/* 🧊 titre principal */
+h1 {
+    position: absolute;
+    top: 30px;
+    color: white;
+    text-align: center;
+    font-size: 22px;
+    animation: fadeDown 1s ease;
+}
+
+@keyframes fadeDown {
+    from {opacity: 0; transform: translateY(-20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+/* 📦 container moderne */
+.container {
+    width: 380px;
+    padding: 30px;
+    border-radius: 20px;
+
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(15px);
+
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+
+    text-align: center;
+
+    animation: fadeIn 1.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* 🧾 titre login */
+h2 {
+    color: white;
+    margin-bottom: 20px;
+}
+
+/* 📝 inputs modernes */
+.input-group {
+    position: relative;
+    margin: 15px 0;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 40px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    transition: 0.3s;
+}
+
+/* focus animation */
+.input-group input:focus {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px #00f2fe;
+}
+
+/* icônes */
+.input-group i {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    color: #555;
+}
+
+/* 🔘 bouton */
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+
+    background: #4facfe;
+    color: white;
+    font-weight: bold;
+
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #00c6ff;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+/* 🔗 lien */
+a {
+    color: white;
+    font-weight: bold;
+}
+
+/* 📢 messages */
+ul {
+    list-style: none;
+    padding: 0;
+}
+li {
+    color: #00ffcc;
+}
+
+/* 📱 mobile */
+@media(max-width: 420px){
+    .container {
+        width: 90%;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+<h2>Connexion</h2>
+
+<!-- messages Flask -->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul>
+    {% for msg in messages %}
+    <li>{{ msg }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+
+<!-- form -->
+<form method="POST">
+
+    <div class="input-group">
+        <i class="fa fa-user"></i>
+        <input type="text" name="nom" placeholder="Nom et prénom" required>
+    </div>
+
+    <div class="input-group">
+        <i class="fa fa-lock"></i>
+        <input type="password" name="password" placeholder="Mot de passe" required>
+    </div>
+
+    <button type="submit">Connexion</button>
+</form>
+
+<p style="margin-top:15px; color:white;">
+    Vous n'avez pas de compte ? 
+    <a href="/creercompte">Créer un compte</a>
+</p>
+
+
+</div>
+
+<script>
+let message = "{{ message }}";
+if(message){
+    alert(message);
+}
+
+let message2 = "{{ message2 }}";
+if(message2){
+    alert(message2);
+}
+</script>
+
+</body>
 </html>
+
+   
